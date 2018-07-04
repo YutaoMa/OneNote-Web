@@ -8,3 +8,4 @@ venv/
 # Project
 config.py
 static/js/jquery.js
+static/templates/note.html

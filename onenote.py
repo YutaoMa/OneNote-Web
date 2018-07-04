@@ -51,16 +51,24 @@ def onenote():
 @APP.route('/get', methods=['GET'])
 def get():
     if request.args.get('notebook'):
-        return json.dumps(MSGRAPH.get('me/onenote/notebooks/' + request.args.get('notebook') + '/sections',
+        return json.dumps(MSGRAPH.get('me/onenote/notebooks/' +
+                                      request.args.get('notebook') + '/sections?select=id,name',
                                       headers=request_headers()).data)
     elif request.args.get('section'):
-        return json.dumps(MSGRAPH.get('me/onenote/sections/' + request.args.get('section') + '/pages',
+        return json.dumps(MSGRAPH.get('me/onenote/sections/' + request.args.get('section') + '/pages?select=id,title',
                                       headers=request_headers()).data)
     elif request.args.get('note'):
-        return json.dumps(MSGRAPH.get('me/onenote/pages/' + request.args.get('note') + '/preview',
-                                      headers=request_headers()).data)
+        note_file = open("static/templates/note.html", "w", encoding='UTF-8')
+        response = MSGRAPH.get('me/onenote/pages/' + request.args.get('note') + '/content',
+                               headers=request_headers())
+        note_file.write(response.data.decode('utf8', 'ignore'))
+        note_file.close()
+        return flask.render_template('note.html')
+    elif request.args.get('content'):
+        return flask.Response(MSGRAPH.get(request.args.get('content').strip('https://graph.microsoft.com/v1.0/')).data,
+                              mimetype='image/jpeg')
     else:
-        return json.dumps(MSGRAPH.get('me/onenote/notebooks', headers=request_headers()).data)
+        return json.dumps(MSGRAPH.get('me/onenote/notebooks?select=id,name', headers=request_headers()).data)
 
 
 @MSGRAPH.tokengetter
