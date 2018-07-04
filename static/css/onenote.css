@@ -1,0 +1,21 @@
+div {
+    flex-basis: 55%;
+}
+
+h1 {
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+}
+
+section {
+    flex-basis: 15%;
+}
+
+select, textarea {
+    width: 100%;
+    height: 100%;
+}
