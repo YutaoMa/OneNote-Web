@@ -1,3 +1,5 @@
+# coding:utf-8
+
 import flask
 from flask_oauthlib.client import OAuth
 from flask import request
@@ -69,6 +71,15 @@ def get():
                               mimetype='image/jpeg')
     else:
         return json.dumps(MSGRAPH.get('me/onenote/notebooks?select=id,name', headers=request_headers()).data)
+
+
+@APP.route('/post')
+def post():
+    section = request.args.get('section')
+    body = flask.render_template('newnote.html',
+                                 title=request.args.get('title'))
+    return json.dumps(MSGRAPH.post("me/onenote/sections/" + section + "/pages",
+                                   data=body, headers=request_headers(), content_type='text/html').status)
 
 
 @MSGRAPH.tokengetter

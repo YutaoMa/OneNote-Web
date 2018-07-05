@@ -1,5 +1,24 @@
+body {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 h1 {
     text-align: center;
+}
+
+header {
+    box-shadow: 5px 5px 15px #888888;
+}
+
+header h2{
+    padding: 5px;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 main {
@@ -9,20 +28,22 @@ main {
 
 #note {
     height: 100%;
-    width: 100%;
-    position: absolute;
+}
+
+#note div {
+    box-shadow: 2px 2px 5px #888888;
+    padding: 10px;
+    margin: 10px;
 }
 
 #note-section {
     flex-basis: 55%;
-    height: 100%;
-    width: 100%;
 }
 
 #notebooks-section, #sections-section, #pages-section {
     flex-basis: 15%;
 }
 
-#notebooks-list, #sections-list, #pages-list {
+#notebooks-list, #sections-list, #pages-list, #note-section {
     width: 100%;
 }

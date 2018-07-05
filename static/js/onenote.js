@@ -4,6 +4,7 @@
     window.onload = function(){
         updateNotebooks();
         document.getElementById("refresh").onclick = updateNotebooks;
+        document.getElementById("new-note").onclick = newNote;
     }
 
     function updateNotebooks(){
@@ -59,6 +60,7 @@
         $.get('/get?note=' + this.value, function(result){
             $("#note").html(result);
             updateContents();
+            updateStyle();
         });
     }
 
@@ -70,8 +72,35 @@
             parent.removeChild(image);
             let newImage = document.createElement("img");
             newImage.src = "/get?content=" + src;
-            parent.appendChild(newImage);
-            
+            parent.appendChild(newImage); 
+        }
+    }
+
+    function updateStyle(){
+        let divs = $("#note div");
+        for(let div of divs){
+            div.style = "";
+        }
+    }
+
+    function newNote(){
+        $("#new-note-info").empty();
+        let title = $("#new-note-name").val();
+        let section = $("#sections-list").val();
+        if(title != ""){
+            if(section != null){
+                $.get('/post?title=' + title + "&section=" + section, function(result){
+                    if(result == "201"){
+                        $("#new-note-info").text("New note created!");
+                    } else{
+                        $("#new-note-info").text("Request error: " + result);
+                    }
+                });
+            } else{
+                $("#new-note-info").text("Must choose a section first!");
+            }
+        } else{
+            $("#new-note-info").text("New note name cannot be empty!");
         }
     }
 
