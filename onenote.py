@@ -73,13 +73,27 @@ def get():
         return json.dumps(MSGRAPH.get('me/onenote/notebooks?select=id,name', headers=request_headers()).data)
 
 
-@APP.route('/post')
+@APP.route('/post', methods=['GET'])
 def post():
-    section = request.args.get('section')
-    body = flask.render_template('newnote.html',
-                                 title=request.args.get('title'))
-    return json.dumps(MSGRAPH.post("me/onenote/sections/" + section + "/pages",
-                                   data=body, headers=request_headers(), content_type='text/html').status)
+    if request.args.get('section'):
+        section = request.args.get('section')
+        body = flask.render_template('newnote.html',
+                                     title=request.args.get('title'))
+        return json.dumps(MSGRAPH.post("me/onenote/sections/" + section + "/pages",
+                                       data=body, headers=request_headers(), content_type='text/html').status)
+    else:
+        notebook = request.args.get('notebook')
+        body = {'displayName': request.args.get('title')};
+        return json.dumps(MSGRAPH.post("me/onenote/notebooks/" + notebook + "/sections",
+                                       data=body, headers=request_headers(), format='json').status)
+
+
+@APP.route('/delete', methods=['GET'])
+def delete():
+    page = request.args.get('page')
+    return json.dumps(MSGRAPH.delete("me/onenote/pages/" + page,
+                                     headers=request_headers(),
+                                     format='json').status)
 
 
 @MSGRAPH.tokengetter

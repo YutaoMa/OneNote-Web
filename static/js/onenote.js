@@ -5,6 +5,8 @@
         updateNotebooks();
         document.getElementById("refresh").onclick = updateNotebooks;
         document.getElementById("new-note").onclick = newNote;
+        document.getElementById("delete-note").onclick = deleteNote;
+        document.getElementById("new-section").onclick = newSection;
     }
 
     function updateNotebooks(){
@@ -101,6 +103,43 @@
             }
         } else{
             $("#new-note-info").text("New note name cannot be empty!");
+        }
+    }
+
+    function deleteNote(){
+        $("#new-note-info").empty();
+        let page = $("#pages-list").val();
+        if(page != null){
+            $.get("/delete?page=" + page, function(result){
+                if(result == "204"){
+                    $("#new-note-info").text("Note deleted!");
+                } else{
+                    $("#new-note-info").text("Request error: " + result);
+                }
+            });
+        } else{
+            $("#new-note-info").text("Select a note to delete first!");
+        }
+    }
+
+    function newSection(){
+        $("#new-section-info").empty();
+        let title = $("#new-section-name").val();
+        let notebook = $("#notebooks-list").val();
+        if(title != ""){
+            if(notebook != null){
+                $.get('/post?title=' + title + "&notebook=" + notebook, function(result){
+                    if(result == "201"){
+                        $("#new-section-info").text("New section created!");
+                    } else{
+                        $("#new-section-info").text("Request error: " + result);
+                    }
+                });
+            } else{
+                $("#new-section-info").text("Must choose a notebook first!");
+            }
+        } else{
+            $("#new-section-info").text("New section name cannot be empty!");
         }
     }
 
