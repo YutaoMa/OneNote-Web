@@ -57,7 +57,8 @@ def get():
                                       request.args.get('notebook') + '/sections?select=id,name',
                                       headers=request_headers()).data)
     elif request.args.get('section'):
-        return json.dumps(MSGRAPH.get('me/onenote/sections/' + request.args.get('section') + '/pages?select=id,title',
+        return json.dumps(MSGRAPH.get('me/onenote/sections/' + request.args.get('section') +
+                                      '/pages?select=id,title&top=100',
                                       headers=request_headers()).data)
     elif request.args.get('note'):
         note_file = open("static/templates/note.html", "w", encoding='UTF-8')
@@ -94,6 +95,19 @@ def delete():
     return json.dumps(MSGRAPH.delete("me/onenote/pages/" + page,
                                      headers=request_headers(),
                                      format='json').status)
+
+
+@APP.route('/update', methods=['GET'])
+def update():
+    note = request.args.get('note')
+    title = request.args.get('title')
+    body = [{
+        "target": "title",
+        "action": "replace",
+        "content": title
+    }]
+    return json.dumps(MSGRAPH.patch("me/onenote/pages/" + note + "/content",
+                                    data=body, headers=request_headers(), format='json').status)
 
 
 @MSGRAPH.tokengetter

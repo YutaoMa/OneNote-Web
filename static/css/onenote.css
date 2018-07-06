@@ -4,16 +4,38 @@ body {
     margin-right: auto;
 }
 
+button {
+    cursor: pointer;
+    background-color: white;
+    text-transform: uppercase;
+    vertical-align: middle;
+    border-radius: 15px;
+}
+
+button:hover, option:hover {
+    background-color: #1e90ffaa;
+    color: white;
+}
+
+button, option {
+    font-family: "Segoe UI", sans-serif;
+}
+
 h1 {
     text-align: center;
 }
 
-header {
-    box-shadow: 5px 5px 15px #888888;
+h1, h2 {
+    font-weight: lighter;
 }
 
-header h2{
-    padding: 5px;
+h2{
+    padding-bottom: 5px;
+    padding-left: 10px;
+}
+
+header {
+    box-shadow: 5px 5px 15px #888888;
 }
 
 img {
@@ -33,7 +55,6 @@ main {
 #note div {
     box-shadow: 2px 2px 5px #888888;
     padding: 10px;
-    margin: 10px;
 }
 
 #note-section {
@@ -46,4 +67,23 @@ main {
 
 #notebooks-list, #sections-list, #pages-list, #note-section {
     width: 100%;
+}
+
+option {
+    box-shadow: 1px 1px 1px #888888;
+    padding: 5px;
+    text-align: center;
+}
+
+option:checked {
+    text-align: right;
+}
+
+select {
+    height: 500px;
+    overflow: auto;
+}
+
+select:hover, input:hover {
+    border-color: #1e90ffaa;
 }

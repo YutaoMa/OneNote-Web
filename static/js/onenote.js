@@ -6,10 +6,12 @@
         document.getElementById("refresh").onclick = updateNotebooks;
         document.getElementById("new-note").onclick = newNote;
         document.getElementById("delete-note").onclick = deleteNote;
+        document.getElementById("rename-note").onclick = renameNote;
         document.getElementById("new-section").onclick = newSection;
     }
 
     function updateNotebooks(){
+        $("#notebook-info").text("Getting notebooks...");
         $("#notebooks-list").empty();
         $("#sections-list").empty();
         $("#pages-list").empty();
@@ -20,13 +22,15 @@
                 let newNotebook = document.createElement('option');
                 newNotebook.innerText = notebook['displayName'];
                 newNotebook.value = notebook['id'];
-                newNotebook.onclick = updateSections;
+                newNotebook.ondblclick = updateSections;
                 document.getElementById('notebooks-list').appendChild(newNotebook);
             }
+            $("#notebook-info").text("Fetch notebooks success.");
         })
     }
 
     function updateSections(){
+        $("#section-info").text("Getting sections...");
         $("#sections-list").empty();
         $("#pages-list").empty();
         $("#note").empty();
@@ -36,13 +40,15 @@
                 let newSection = document.createElement('option');
                 newSection.innerText = section['displayName'];
                 newSection.value = section['id'];
-                newSection.onclick = updatePages;
+                newSection.ondblclick = updatePages;
                 document.getElementById("sections-list").appendChild(newSection);
             }
+            $("#section-info").text("Fetch sections success.");
         });
     }
 
     function updatePages(){
+        $("#note-info").text("Getting notes...");
         $("#pages-list").empty();
         $("#note").empty();
         $.get("/get?section=" + this.value, function(result){
@@ -51,14 +57,15 @@
                 let newPage = document.createElement('option');
                 newPage.innerText = page['title'];
                 newPage.value = page['id'];
-                newPage.onclick = updateNote;
+                newPage.ondblclick = updateNote;
                 document.getElementById("pages-list").appendChild(newPage);
             }
+            $("#note-info").text("Fetching notes success.");
         });
     }
 
     function updateNote(){
-        $("#note").empty();
+        $("#note").text("Openning note...");
         $.get('/get?note=' + this.value, function(result){
             $("#note").html(result);
             updateContents();
@@ -86,60 +93,81 @@
     }
 
     function newNote(){
-        $("#new-note-info").empty();
-        let title = $("#new-note-name").val();
+        $("#note-info").text("Creating new note...");
+        let title = $("#note-name").val();
         let section = $("#sections-list").val();
         if(title != ""){
             if(section != null){
                 $.get('/post?title=' + title + "&section=" + section, function(result){
                     if(result == "201"){
-                        $("#new-note-info").text("New note created!");
+                        $("#note-info").text("New note created.");
                     } else{
-                        $("#new-note-info").text("Request error: " + result);
+                        $("#note-info").text("Request error: " + result);
                     }
                 });
             } else{
-                $("#new-note-info").text("Must choose a section first!");
+                $("#note-info").text("Must choose a section first!");
             }
         } else{
-            $("#new-note-info").text("New note name cannot be empty!");
+            $("#note-info").text("New note name cannot be empty!");
         }
     }
 
     function deleteNote(){
-        $("#new-note-info").empty();
+        $("#note-info").text("Deleting note...");
         let page = $("#pages-list").val();
         if(page != null){
             $.get("/delete?page=" + page, function(result){
                 if(result == "204"){
-                    $("#new-note-info").text("Note deleted!");
+                    $("#note-info").text("Note deleted.");
                 } else{
-                    $("#new-note-info").text("Request error: " + result);
+                    $("#note-info").text("Request error: " + result);
                 }
             });
         } else{
-            $("#new-note-info").text("Select a note to delete first!");
+            $("#note-info").text("Select a note to delete first!");
+        }
+    }
+
+    function renameNote(){
+        $("#note-info").text("Renaming note...");
+        let note = $("#pages-list").val();
+        let title = $("#note-name").val();
+        if(note != null){
+            if(title != ""){
+                $.get("/update?note=" + note + "&title=" + title, function(result){
+                    if(result == "204"){
+                        $("#note-info").text("Note renamed.");
+                    } else{
+                        $("#note-info").text("Request error: " + result);
+                    }
+                });
+            } else{
+                $("#note-info").text("New note name cannot be empty!");
+            }            
+        } else{
+            $("#note-info").text("Select a note to rename first!");
         }
     }
 
     function newSection(){
-        $("#new-section-info").empty();
-        let title = $("#new-section-name").val();
+        $("#section-info").empty();
+        let title = $("#section-name").val();
         let notebook = $("#notebooks-list").val();
         if(title != ""){
             if(notebook != null){
                 $.get('/post?title=' + title + "&notebook=" + notebook, function(result){
                     if(result == "201"){
-                        $("#new-section-info").text("New section created!");
+                        $("#section-info").text("New section created.");
                     } else{
-                        $("#new-section-info").text("Request error: " + result);
+                        $("#section-info").text("Request error: " + result);
                     }
                 });
             } else{
-                $("#new-section-info").text("Must choose a notebook first!");
+                $("#section-info").text("Must choose a notebook first!");
             }
         } else{
-            $("#new-section-info").text("New section name cannot be empty!");
+            $("#section-info").text("New section name cannot be empty!");
         }
     }
 

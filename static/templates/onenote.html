@@ -16,29 +16,33 @@
             <section id="notebooks-section">
                 <select id="notebooks-list" size="25"></select>
                 <button id="refresh">Refresh Notebooks</button>
+                <div>
+                    <p id="notebook-info"></p>
+                </div>
             </section>
 
             <section id="sections-section">
                 <select id="sections-list" size="25"></select>
                 <div>
-                    <input id="new-section-name">
+                    <input id="section-name">
                     <button id="new-section">New Section</button>
+                    <p id="section-info"></p>
                 </div>
-                <p id="new-section-info"></p>
             </section>
 
             <section id="pages-section">
                 <select id="pages-list" size="25"></select>
                 <div>
-                    <input id="new-note-name">
+                    <input id="note-name">
                     <button id="new-note">New Note</button>
+                    <button id="rename-note">Rename Note</button>
                     <button id="delete-note">Delete Note</button>
+                    <p id="note-info"></p>
                 </div>
-                <p id="new-note-info"></p>
             </section>
 
             <section id="note-section">
-                <div id="note" contenteditable="true"></div>
+                <div id="note"></div>
             </section>
         </main>
     </body>
