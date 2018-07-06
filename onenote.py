@@ -84,7 +84,7 @@ def post():
                                        data=body, headers=request_headers(), content_type='text/html').status)
     else:
         notebook = request.args.get('notebook')
-        body = {'displayName': request.args.get('title')};
+        body = {'displayName': request.args.get('title')}
         return json.dumps(MSGRAPH.post("me/onenote/notebooks/" + notebook + "/sections",
                                        data=body, headers=request_headers(), format='json').status)
 

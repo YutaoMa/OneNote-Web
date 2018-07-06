@@ -4,6 +4,7 @@ __pycache__/
 # IDE
 .idea/
 venv/
+.vscode/
 
 # Project
 config.py
