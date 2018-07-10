@@ -60,7 +60,7 @@
                 newPage.ondblclick = updateNote;
                 document.getElementById("pages-list").appendChild(newPage);
             }
-            $("#note-info").text("Fetching notes success.");
+            $("#note-info").text("Fetch notes success.");
         });
     }
 
@@ -89,7 +89,18 @@
         let divs = $("#note div");
         for(let div of divs){
             div.style = "";
+            div.ondblclick = startEditing;
+            div.onblur = quitEditing;
         }
+    }
+
+    function startEditing(){
+        this.contentEditable = true;
+        this.focus();
+    }
+
+    function quitEditing(){
+        this.contentEditable = false;
     }
 
     function newNote(){

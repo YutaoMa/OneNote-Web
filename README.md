@@ -8,6 +8,7 @@ A OneNote Web App built with Mirosoft Graph API.
 3. Add or delete notes.
 4. Add sections.
 5. Rename notes.
+6. Edit notes.
 
 ## Dependencies
 
